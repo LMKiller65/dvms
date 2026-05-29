@@ -139,6 +139,13 @@ function renderInventoryTable() {
             </td>
             <td>
                 <div class="table-actions">
+                    <button class="icon-btn-table toggle-stock-btn" onclick="toggleProductSoldOut('${p.id}')" title="${p.status === 'sold_out' ? 'Remettre en Stock' : 'Marquer comme Épuisé'}">
+                        ${p.status === 'sold_out' 
+                            ? `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>` 
+                            : `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>`
+                        }
+                        <span class="table-btn-text">${p.status === 'sold_out' ? 'Restocker' : 'Rupture'}</span>
+                    </button>
                     <button class="icon-btn-table edit-btn" onclick="openEditModal('${p.id}')" title="Éditer">
                         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
@@ -352,6 +359,26 @@ function setupDashboardEventListeners() {
     });
 }
 
+// Quick toggle product sold out status
+async function toggleProductSoldOut(productId) {
+    const p = products.find(prod => prod.id === productId);
+    if (!p) return;
+
+    const newStatus = p.status === 'sold_out' ? 'active' : 'sold_out';
+    const success = await window.db.saveProduct(p.id, {
+        ...p,
+        status: newStatus
+    });
+
+    if (success) {
+        console.log(`Admin: Product ${p.title} toggled to ${newStatus}.`);
+        await loadInventory();
+    } else {
+        alert("Erreur lors de la mise à jour du statut.");
+    }
+}
+
 // Expose globally for click references in inventory table
 window.openEditModal = openEditModal;
 window.handleDeleteProduct = handleDeleteProduct;
+window.toggleProductSoldOut = toggleProductSoldOut;
