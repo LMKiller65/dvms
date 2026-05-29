@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIEU VA ME SAUVER — DVMS Gabon | Official Streetwear Store</title>
+    <meta name="description" content="DVMS — DIEU VA ME SAUVER. Maison de design streetwear premium au Gabon. Commande exclusive via WhatsApp. Envoi national.">
+    
+    <!-- Modular Stylesheets -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="storefront.css">
+    
+    <!-- Supabase JS Client library CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+    <!-- Demo Alert Banner (Only displayed if Supabase is unconfigured) -->
+    <div id="demo-banner" class="db-setup-alert" style="margin: 0; border: none; border-bottom: var(--border-light); padding: 12px 0; display: none;">
+        <div class="container" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <div>
+                <span class="db-setup-title" style="font-size: 0.85rem; margin: 0; font-family: var(--font-technical); font-weight: bold;">
+                    [MODE DÉMO LOCAL]
+                </span>
+                <span style="font-family: var(--font-technical); font-size: 0.8rem; margin-left: 10px;">
+                    Le site fonctionne en stockage local. Configurez Supabase dans <code>config.js</code> pour activer le cloud.
+                </span>
+            </div>
+            <button onclick="document.getElementById('demo-banner').style.display='none';" class="action-btn" style="padding: 4px 8px; font-size: 0.7rem; border-width: 1px;">OK</button>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="/" class="nav-brand">DVMS</a>
+            <div class="nav-links">
+                <a href="#shop" class="nav-link">Shop</a>
+                <button class="cart-trigger" id="cart-btn" aria-label="Ouvrir le panier">
+                    <span>PANIER</span>
+                    <span class="cart-badge" id="cart-count">0</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Top Running Marquee -->
+    <div class="marquee-container" aria-hidden="true">
+        <div class="marquee-content">
+            <span class="marquee-text">DIEU VA ME SAUVER</span>
+            <span class="marquee-text">LIVRAISON GRATUITE SUR LIBREVILLE</span>
+            <span class="marquee-text">DVMS GABON</span>
+            <span class="marquee-text">COMMANDES WHATSAPP UNIQUEMENT</span>
+            <!-- Duplicated for seamless loop -->
+            <span class="marquee-text">DIEU VA ME SAUVER</span>
+            <span class="marquee-text">LIVRAISON GRATUITE SUR LIBREVILLE</span>
+            <span class="marquee-text">DVMS GABON</span>
+            <span class="marquee-text">COMMANDES WHATSAPP UNIQUEMENT</span>
+        </div>
+    </div>
+
+    <!-- Nike-Inspired Editorial Hero -->
+    <header class="hero">
+        <div class="container hero-editorial-grid">
+            <div class="hero-brand-statement">
+                <div class="hero-subtitle">COLLECTION 01 / REDEMPTION</div>
+                
+                <!-- Signature Logo from Image -->
+                <div class="dieu-va-logo" style="align-items: flex-start;">
+                    <span class="solid">DIEU VA</span>
+                    <span class="outlined">ME SAUVER</span>
+                </div>
+                
+                <p>
+                    Conçu pour les âmes insoumises. Coton lourd de qualité supérieure, finitions industrielles et coupes oversized pensées à Libreville, Gabon.
+                </p>
+                
+                <a href="#shop" class="btn-brutal black-btn">Acheter la collection</a>
+            </div>
+            
+            <div class="hero-image-frame">
+                <!-- High fashion moody streetwear visual -->
+                <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=1000&auto=format&fit=crop" alt="DVMS Gabon Streetwear Editorial">
+            </div>
+        </div>
+    </header>
+
+    <!-- Reverse Running Marquee -->
+    <div class="marquee-container" aria-hidden="true" style="background-color: #ffffff; color: #000000; border-top: none; border-bottom: var(--border-light);">
+        <div class="marquee-content" style="animation-direction: reverse;">
+            <span class="marquee-text">DIEU VA ME SAUVER</span>
+            <span class="marquee-text">PIÈCES EN ÉDITIONS TRÈS LIMITÉES</span>
+            <span class="marquee-text">DVMS</span>
+            <span class="marquee-text">HEAVY COTTON 240+ GSM</span>
+            <!-- Duplicated for seamless loop -->
+            <span class="marquee-text">DIEU VA ME SAUVER</span>
+            <span class="marquee-text">PIÈCES EN ÉDITIONS TRÈS LIMITÉES</span>
+            <span class="marquee-text">DVMS</span>
+            <span class="marquee-text">HEAVY COTTON 240+ GSM</span>
+        </div>
+    </div>
+
+    <!-- Shop Grid Section -->
+    <main class="catalog-section" id="shop">
+        <!-- Controls (Filters + Sorting) -->
+        <div class="catalog-controls">
+            <div class="container controls-container">
+                <div class="filter-group" id="category-filters">
+                    <button class="filter-btn active" data-filter="all">Tous les articles</button>
+                    <button class="filter-btn" data-filter="T-Shirt">T-Shirts</button>
+                    <button class="filter-btn" data-filter="Sweatshirt">Sweats & Hoodies</button>
+                    <button class="filter-btn" data-filter="Pantalon">Pantalons</button>
+                    <button class="filter-btn" data-filter="Accessoire">Accessoires</button>
+                </div>
+                
+                <div class="sort-select-wrapper">
+                    <label for="sort-select">Trier par :</label>
+                    <select class="sort-select" id="sort-select">
+                        <option value="default">Défaut</option>
+                        <option value="price-asc">Prix croissant</option>
+                        <option value="price-desc">Prix décroissant</option>
+                        <option value="name-asc">Nom A-Z</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products -->
+        <div class="container" style="margin-top: 60px;">
+            <div class="product-grid" id="product-grid">
+                <!-- Products injected dynamically -->
+                <div style="grid-column: 1/-1; text-align: center; padding: 120px 0; font-family: var(--font-technical);">
+                    <div style="font-size: 1.3rem; font-weight: bold; margin-bottom: 20px; text-transform: uppercase;">CHARGEMENT DES PIÈCES...</div>
+                    <div style="width: 50px; height: 50px; border: 3px solid var(--text-color); border-top-color: transparent; border-radius: 50% !important; margin: 0 auto; animation: spin 0.8s linear infinite;"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Drawer Backdrop -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Sliding Product Detail Panel -->
+    <section class="side-panel" id="detail-panel" aria-hidden="true">
+        <div class="panel-header">
+            <span class="panel-title">PIÈCE</span>
+            <button class="panel-close" id="detail-close" aria-label="Fermer le panneau">&times;</button>
+        </div>
+        <div class="panel-body" id="detail-body">
+            <!-- Injected dynamically -->
+        </div>
+        <div class="panel-footer" id="detail-footer">
+            <!-- Injected dynamically -->
+        </div>
+    </section>
+
+    <!-- Sliding Shopping Cart Panel -->
+    <section class="side-panel" id="cart-panel" aria-hidden="true">
+        <div class="panel-header">
+            <span class="panel-title">PANIER</span>
+            <button class="panel-close" id="cart-close" aria-label="Fermer le panier">&times;</button>
+        </div>
+        <div class="panel-body">
+            <div class="cart-items-list" id="cart-items">
+                <!-- Cart items injected dynamically -->
+            </div>
+        </div>
+        <div class="panel-footer">
+            <div class="cart-totals">
+                <div class="cart-total-row">
+                    <span>Sous-total</span>
+                    <span id="cart-subtotal">0 FCFA</span>
+                </div>
+                <div class="cart-total-row">
+                    <span>Livraison (Gabon)</span>
+                    <span style="font-weight: bold;">GRATUITE</span>
+                </div>
+                <div class="cart-total-row grand-total">
+                    <span>TOTAL</span>
+                    <span id="cart-total">0 FCFA</span>
+                </div>
+            </div>
+            
+            <button class="btn-brutal black-btn" id="checkout-btn" style="width: 100%; margin-top: 15px;">
+                Passer la commande sur WhatsApp
+            </button>
+            <div style="font-family: var(--font-technical); font-size: 0.78rem; text-align: center; color: var(--text-muted); margin-top: 10px; line-height: 1.4;">
+                Aucune transaction n'a lieu sur le site. Vous serez redirigé vers WhatsApp avec votre panier pour finaliser avec l'équipe DVMS Gabon.
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand-section">
+                    <div class="footer-logo">DVMS</div>
+                    <div class="footer-desc">
+                        Brutalism streetwear, heavy premium garment design. Libreville, Gabon. Conçu pour les âmes en quête de salut.
+                    </div>
+                </div>
+                <div>
+                    <h3 class="footer-title">Navigation</h3>
+                    <ul class="footer-links">
+                        <li class="footer-link-item"><a href="#shop">Découvrir le shop</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="footer-title">Gabon Commande</h3>
+                    <div class="footer-info-row">Support: contact@dvms.store</div>
+                    <div class="footer-info-row">Livraison gratuite sur Libreville (Gabon). Envoi par transporteur dans les autres provinces (Port-Gentil, Franceville, Oyem).</div>
+                    <div class="footer-info-row" style="font-weight: bold; text-decoration: underline;">Finalisation exclusive sur WhatsApp.</div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="footer-copy">
+                    &copy; 2026 DIEU VA ME SAUVER (DVMS) GABON. Tous droits réservés.
+                </div>
+                <div class="footer-abbreviation">DVMS</div>
+            </div>
+        </div>
+    </footer>
+
+    <style>
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+
+    <!-- Modular Script Injections -->
+    <script src="config.js"></script>
+    <script src="database.js"></script>
+    <script src="cart.js"></script>
+    <script src="app.js" defer></script>
+</body>
+</html>

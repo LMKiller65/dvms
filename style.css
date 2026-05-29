@@ -1,0 +1,288 @@
+/* ====================================================================
+   DIEU VA ME SAUVER (DVMS) - Unified Clean Design System
+   ==================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+    /* Color Tokens (Luxurious Stark Monochrome) */
+    --bg-color: #f7f7f7;
+    --card-bg: #ffffff;
+    --text-color: #111111;
+    --text-muted: #777777;
+    --accent-dark: #111111;
+    --accent-light: #ffffff;
+    
+    /* Clean Streetwear Layout Tokens (Shopify Impulse-style) */
+    --border-light: 1px solid #e8e8e8;
+    --border-medium: 1px solid #111111;
+    --border-dashed: 1px dashed #cccccc;
+    
+    --shadow-soft: 0px 10px 30px rgba(0, 0, 0, 0.04);
+    --shadow-medium: 0px 15px 40px rgba(0, 0, 0, 0.06);
+    
+    /* Premium Typography (Unified System - Max 2 Fonts) */
+    --font-heading: 'Montserrat', sans-serif;
+    --font-body: 'Outfit', sans-serif;
+    --font-technical: 'Outfit', sans-serif; /* Unified to Outfit */
+    
+    --transition-speed: 0.22s;
+}
+
+/* Base Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border-radius: 0px !important; /* STRICT SHARP CORNERS */
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-body);
+    font-weight: 300;
+    line-height: 1.5;
+    letter-spacing: 0.02em;
+    overflow-x: hidden;
+    cursor: default;
+}
+
+/* Custom Text Selection */
+::selection {
+    background-color: var(--text-color);
+    color: var(--accent-light);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-color);
+}
+::-webkit-scrollbar-thumb {
+    background: #cccccc;
+    border: 2px solid var(--bg-color);
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #999999;
+}
+
+/* Base Typographic Hierarchies */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    text-transform: uppercase;
+    line-height: 1.05;
+    letter-spacing: 0.01em;
+}
+
+p {
+    font-family: var(--font-body);
+    font-weight: 300;
+}
+
+/* ━━━ BRAND LOGO SYSTEM (MATCHES BRAND IMAGE STYLE) ━━━ */
+.dieu-va-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    line-height: 0.8;
+    text-align: center;
+    user-select: none;
+}
+
+.dieu-va-logo .solid {
+    font-family: var(--font-heading);
+    font-size: clamp(2.5rem, 8.5vw, 6.2rem);
+    font-weight: 900;
+    color: var(--text-color);
+    letter-spacing: -0.04em;
+}
+
+.dieu-va-logo .outlined {
+    font-family: var(--font-heading);
+    font-size: clamp(2.5rem, 8.5vw, 6.2rem);
+    font-weight: 900;
+    color: var(--text-color); /* Transformed outlined styling to a solid clean brand face */
+    letter-spacing: -0.04em;
+}
+
+/* Unified Container Layout */
+.container {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* ━━━ REFINED PREMIUM BUTTONS ━━━ */
+.btn-brutal {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    padding: 16px 30px;
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border: var(--border-medium);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all var(--transition-speed) cubic-bezier(0.16, 1, 0.3, 1);
+    user-select: none;
+}
+
+.btn-brutal:hover {
+    background-color: var(--text-color);
+    color: var(--accent-light);
+}
+
+.btn-brutal.black-btn {
+    background-color: var(--text-color);
+    color: var(--accent-light);
+    border: var(--border-medium);
+}
+
+.btn-brutal.black-btn:hover {
+    background-color: #222222;
+    color: var(--accent-light);
+}
+
+.btn-brutal:disabled {
+    opacity: 0.25;
+    cursor: not-allowed;
+    background-color: #eaeaea !important;
+    border-color: #cccccc !important;
+    color: #999999 !important;
+}
+
+/* ━━━ INPUT AND FORM ELEMENTS (REFINED STREETWEAR) ━━━ */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.form-label {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.78rem;
+    letter-spacing: 0.05em;
+    color: var(--text-color);
+}
+
+.form-input {
+    width: 100%;
+    border: var(--border-light);
+    padding: 12px 14px;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    background-color: var(--card-bg);
+    outline: none;
+    transition: all var(--transition-speed);
+}
+
+.form-input:focus {
+    border-color: var(--text-color);
+    background-color: #fafafa;
+}
+
+.form-input::placeholder {
+    color: #bbbbbb;
+}
+
+/* ━━━ SYSTEM NOTIFICATIONS AND BADGES ━━━ */
+.db-setup-alert {
+    background-color: var(--card-bg);
+    border: var(--border-light);
+    box-shadow: var(--shadow-soft);
+    padding: 24px;
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.db-setup-title {
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    color: #000000;
+    text-transform: uppercase;
+}
+
+.db-setup-desc {
+    font-family: var(--font-technical);
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+.action-btn {
+    background: none;
+    border: var(--border-light);
+    padding: 6px 14px;
+    font-family: var(--font-technical);
+    font-size: 0.8rem;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all var(--transition-speed);
+    background-color: var(--card-bg);
+}
+
+.action-btn:hover {
+    background-color: var(--text-color);
+    color: var(--accent-light);
+    border-color: var(--text-color);
+}
+
+/* Backdrop Overlay */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(4px);
+    z-index: 150;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition-speed) ease;
+}
+
+.overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.panel-close {
+    background: none;
+    border: none;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    font-weight: 300;
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: color var(--transition-speed);
+}
+
+.panel-close:hover {
+    color: var(--text-color);
+}
