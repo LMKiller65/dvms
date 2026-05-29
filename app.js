@@ -70,26 +70,32 @@ function renderStorefrontProducts() {
 
     list.forEach(product => {
         const isSoldOut = product.status === 'sold_out';
-        const sizesList = Array.isArray(product.sizes) ? product.sizes.join(', ') : 'Unique';
-        
+        const sizes = Array.isArray(product.sizes) ? product.sizes : [];
+        const sizePills = sizes.map(s => `<span class="size-pill">${s}</span>`).join('');
+
         const card = document.createElement('article');
         card.className = 'product-card';
+        card.setAttribute('role', 'button');
+        card.setAttribute('tabindex', '0');
         card.innerHTML = `
-            ${isSoldOut ? '<div class="product-badge sold-out-badge">SOLD OUT</div>' : ''}
             <div class="product-image-container">
                 <img class="product-image" src="${product.image_url || 'https://placehold.co/600x800'}" alt="${product.title}" loading="lazy">
+                ${isSoldOut
+                    ? '<div class="product-badge sold-out-badge">ÉPUISÉ</div>'
+                    : '<div class="card-buy-bar"><span>ACHETER</span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>'
+                }
             </div>
             <div class="product-info">
-                <span class="product-category">${product.category} — Tailles: ${sizesList}</span>
+                <span class="product-category">${product.category}</span>
                 <h3 class="product-title">${product.title}</h3>
                 <div class="product-bottom">
                     <span class="product-price">${window.cart.formatPrice(product.price)}</span>
-                    <button class="product-view-btn" onclick="openProductDetail('${product.id}')">
-                        ${isSoldOut ? 'Détails' : 'Acheter'}
-                    </button>
+                    ${sizePills ? `<div class="size-pills-row">${sizePills}</div>` : ''}
                 </div>
             </div>
         `;
+        card.addEventListener('click', () => openProductDetail(product.id));
+        card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') openProductDetail(product.id); });
         grid.appendChild(card);
     });
 }
@@ -119,108 +125,165 @@ function closeAllPanels() {
 let currentDetailProduct = null;
 let currentDetailSize = null;
 let currentDetailColor = null;
+let currentDetailQty = 1;
+
+// Inline toast notification (no browser alert)
+function showToast(message, type = 'error') {
+    const existing = document.getElementById('dvms-toast');
+    if (existing) existing.remove();
+
+    const toast = document.createElement('div');
+    toast.id = 'dvms-toast';
+    toast.className = `dvms-toast dvms-toast--${type}`;
+    toast.textContent = message;
+    document.body.appendChild(toast);
+
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => toast.classList.add('dvms-toast--visible'));
+    });
+
+    setTimeout(() => {
+        toast.classList.remove('dvms-toast--visible');
+        setTimeout(() => toast.remove(), 350);
+    }, 2800);
+}
 
 function openProductDetail(productId) {
     const product = products.find(p => p.id === productId);
     if (!product) return;
 
     currentDetailProduct = product;
-    currentDetailSize = null; // Clear active size selection
-    currentDetailColor = null; // Clear active color selection
+    currentDetailSize = null;
+    currentDetailColor = null;
+    currentDetailQty = 1;
 
     const body = document.getElementById('detail-body');
     const footer = document.getElementById('detail-footer');
 
     const isSoldOut = product.status === 'sold_out';
     const sizes = Array.isArray(product.sizes) ? product.sizes : [];
-    const colors = Array.isArray(product.colors) ? product.colors : ['Noir'];
+    const colors = Array.isArray(product.colors) ? product.colors : [];
+
+    // Auto-select single color silently
+    if (colors.length === 1) currentDetailColor = colors[0];
 
     body.innerHTML = `
-        <div class="detail-image-wrapper">
-            <img class="detail-image" src="${product.image_url || 'https://placehold.co/600x800'}" alt="${product.title}">
-        </div>
-        <div class="detail-meta">
-            <span class="detail-category">${product.category}</span>
-            <span class="detail-price">${window.cart.formatPrice(product.price)}</span>
-        </div>
-        <h2 class="product-title" style="font-size: 1.8rem; margin: 8px 0;">${product.title}</h2>
-        <p class="detail-description">${product.description || 'Aucun détail technique disponible pour cette pièce.'}</p>
-        
-        <div class="color-selector-section" style="margin-top: 20px;">
-            <div class="size-selector-label">Sélectionnez la couleur :</div>
-            <div class="size-grid" id="color-grid">
-                ${colors.map(color => `
-                    <button class="color-btn" onclick="selectDetailColor('${color}', this)" ${isSoldOut ? 'disabled' : ''}>
-                        ${color}
-                    </button>
-                `).join('')}
-            </div>
+        <div class="detail-hero-image">
+            <img src="${product.image_url || 'https://placehold.co/600x800'}" alt="${product.title}" class="detail-hero-img">
+            ${isSoldOut ? '<div class="detail-sold-overlay"><span>ÉPUISÉ</span></div>' : ''}
         </div>
 
-        <div class="size-selector-section" style="margin-top: 20px;">
-            <div class="size-selector-label">Sélectionnez la taille :</div>
-            <div class="size-grid">
-                ${sizes.map(size => `
-                    <button class="size-btn" onclick="selectDetailSize('${size}', this)" ${isSoldOut ? 'disabled' : ''}>
-                        ${size}
-                    </button>
-                `).join('')}
+        <div class="detail-content-block">
+            <div class="detail-header-row">
+                <span class="detail-cat-chip">${product.category}</span>
+                <span class="detail-price-tag">${window.cart.formatPrice(product.price)}</span>
             </div>
+            <h2 class="detail-product-title">${product.title}</h2>
+            ${product.description ? `<p class="detail-description">${product.description}</p>` : ''}
+
+            ${colors.length > 1 ? `
+            <div class="selector-block">
+                <div class="selector-header">
+                    <span class="selector-label">COULEUR</span>
+                    <span class="selector-value" id="selected-color-label">${currentDetailColor || '—'}</span>
+                </div>
+                <div class="selector-row" id="color-grid">
+                    ${colors.map(color => `
+                        <button class="variant-chip color-chip" onclick="selectDetailColor('${color}', this)" ${isSoldOut ? 'disabled' : ''}>
+                            ${color}
+                        </button>
+                    `).join('')}
+                </div>
+            </div>
+            ` : (colors.length === 1 ? `<div class="auto-color-row"><span class="selector-label">COULEUR</span><span class="auto-color-value">${colors[0]}</span></div>` : '')}
+
+            ${sizes.length > 0 ? `
+            <div class="selector-block">
+                <div class="selector-header">
+                    <span class="selector-label">TAILLE</span>
+                    <span class="selector-value" id="selected-size-label">—</span>
+                </div>
+                <div class="selector-row size-selector-section">
+                    ${sizes.map(size => `
+                        <button class="variant-chip size-chip" onclick="selectDetailSize('${size}', this)" ${isSoldOut ? 'disabled' : ''}>
+                            ${size}
+                        </button>
+                    `).join('')}
+                </div>
+            </div>
+            ` : ''}
         </div>
     `;
 
     footer.innerHTML = `
-        <button class="btn-brutal black-btn" id="add-to-cart-btn" style="width: 100%;" 
-                onclick="handleAddToCart()" ${isSoldOut ? 'disabled' : ''}>
-            ${isSoldOut ? 'RUPTURE DE STOCK' : 'AJOUTER AU PANIER'}
-        </button>
+        <div class="detail-footer-inner">
+            <div class="qty-stepper">
+                <button class="qty-step-btn" id="qty-dec" onclick="changeDetailQty(-1)" aria-label="Réduire la quantité">−</button>
+                <span class="qty-step-val" id="detail-qty-val">1</span>
+                <button class="qty-step-btn" id="qty-inc" onclick="changeDetailQty(1)" aria-label="Augmenter la quantité">+</button>
+            </div>
+            <button class="detail-cta-btn" id="add-to-cart-btn"
+                    onclick="handleAddToCart()" ${isSoldOut ? 'disabled' : ''}>
+                ${isSoldOut ? 'RUPTURE DE STOCK' : 'AJOUTER AU PANIER'}
+            </button>
+        </div>
     `;
 
     openPanel(detailPanel);
 }
 
+function changeDetailQty(delta) {
+    currentDetailQty = Math.max(1, currentDetailQty + delta);
+    const el = document.getElementById('detail-qty-val');
+    if (el) el.textContent = currentDetailQty;
+}
+
 function selectDetailSize(size, element) {
     currentDetailSize = size;
-    
-    // Reset selections styles
-    const buttons = document.querySelectorAll('.size-selector-section .size-btn');
+    const buttons = document.querySelectorAll('.size-selector-section .variant-chip');
     buttons.forEach(btn => btn.classList.remove('active'));
     element.classList.add('active');
+    const label = document.getElementById('selected-size-label');
+    if (label) label.textContent = size;
 }
 
 function selectDetailColor(color, element) {
     currentDetailColor = color;
-    
-    // Reset selections styles
-    const buttons = document.querySelectorAll('#color-grid .color-btn');
+    const buttons = document.querySelectorAll('#color-grid .variant-chip');
     buttons.forEach(btn => btn.classList.remove('active'));
     element.classList.add('active');
+    const label = document.getElementById('selected-color-label');
+    if (label) label.textContent = color;
 }
 
 function handleAddToCart() {
     if (!currentDetailProduct) return;
-    
+
     if (currentDetailProduct.status === 'sold_out') {
-        alert('Cette pièce est épuisée.');
+        showToast('Cette pièce est épuisée.');
         return;
     }
 
     const sizes = Array.isArray(currentDetailProduct.sizes) ? currentDetailProduct.sizes : [];
     const colors = Array.isArray(currentDetailProduct.colors) ? currentDetailProduct.colors : [];
-    
-    // Block add if no color has been picked
-    if (colors.length > 0 && !currentDetailColor) {
-        alert('Veuillez sélectionner une couleur avant d\'ajouter la pièce au panier.');
+
+    if (colors.length > 1 && !currentDetailColor) {
+        showToast('Veuillez choisir une couleur.');
+        document.getElementById('color-grid')?.classList.add('selector-shake');
+        setTimeout(() => document.getElementById('color-grid')?.classList.remove('selector-shake'), 600);
         return;
     }
 
-    // Block add if no size has been picked
     if (sizes.length > 0 && !currentDetailSize) {
-        alert('Veuillez sélectionner une taille avant d\'ajouter la pièce au panier.');
+        showToast('Veuillez choisir une taille.');
+        document.querySelector('.size-selector-section')?.classList.add('selector-shake');
+        setTimeout(() => document.querySelector('.size-selector-section')?.classList.remove('selector-shake'), 600);
         return;
     }
 
-    window.cart.add(currentDetailProduct, currentDetailSize || 'Unique', currentDetailColor || 'Noir');
+    for (let i = 0; i < currentDetailQty; i++) {
+        window.cart.add(currentDetailProduct, currentDetailSize || 'Unique', currentDetailColor || 'Noir');
+    }
     closeAllPanels();
     openPanel(cartPanel);
 }
@@ -329,3 +392,4 @@ window.openProductDetail = openProductDetail;
 window.selectDetailSize = selectDetailSize;
 window.selectDetailColor = selectDetailColor;
 window.handleAddToCart = handleAddToCart;
+window.changeDetailQty = changeDetailQty;
