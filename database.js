@@ -5,7 +5,7 @@
 class DatabaseManager {
     constructor() {
         this.supabase = null;
-        this.isDemoMode = true;
+        this.isOfflineMode = true;
         this.init();
     }
 
@@ -18,41 +18,33 @@ class DatabaseManager {
         if (isConfigured) {
             try {
                 this.supabase = window.supabase.createClient(conf.SUPABASE_URL, conf.SUPABASE_ANON_KEY);
-                this.isDemoMode = false;
+                this.isOfflineMode = false;
                 console.log("Database: Supabase connection established successfully.");
             } catch (err) {
-                console.error("Database: Failed to connect to Supabase. Activating Demo Fallback:", err);
-                this.enableDemoMode();
+                console.error("Database: Failed to connect to Supabase. Activating local storage mode:", err);
+                this.enableOfflineMode();
             }
         } else {
-            this.enableDemoMode();
+            this.enableOfflineMode();
         }
     }
 
-    enableDemoMode() {
-        this.isDemoMode = true;
-        console.warn("Database: Running in local localStorage DEMO mode.");
+    enableOfflineMode() {
+        this.isOfflineMode = true;
+        console.warn("Database: Running in offline LocalStorage sandbox mode.");
         
-        // Show demo banners if they exist in DOM
-        setTimeout(() => {
-            const demoB = document.getElementById('demo-banner');
-            const adminDemoB = document.getElementById('admin-demo-banner');
-            if (demoB) demoB.style.display = 'block';
-            if (adminDemoB) adminDemoB.style.display = 'block';
-        }, 100);
-
         // Seed initial data if localStorage is empty
-        this.seedDemoData();
+        this.seedDefaultData();
     }
 
-    seedDemoData() {
+    seedDefaultData() {
         const conf = window.CONFIG;
         
         // 1. Seed default products
         if (!localStorage.getItem(conf.LOCAL_STORAGE_PRODUCTS_KEY)) {
             const defaultProducts = [
                 {
-                    id: 'demo-p1',
+                    id: 'p-1',
                     title: 'T-SHIRT OVERSIZED "DIEU VA"',
                     description: 'T-shirt coupe ultra oversized en coton lourd 240 GSM. Logo imprimé sérigraphie face haute densité. Col haut côtelé épais. Noir délavé industriel.',
                     price: 25000,
@@ -64,7 +56,7 @@ class DatabaseManager {
                     created_at: new Date().toISOString()
                 },
                 {
-                    id: 'demo-p2',
+                    id: 'p-2',
                     title: 'T-SHIRT OUTLINE "ME SAUVER"',
                     description: 'T-shirt coupe boxy en coton blanc craie 220 GSM. Motif signature avec lettrage contour brodé noir sur la poitrine. Coutures contrastées apparentes.',
                     price: 25000,
@@ -76,7 +68,7 @@ class DatabaseManager {
                     created_at: new Date().toISOString()
                 },
                 {
-                    id: 'demo-p3',
+                    id: 'p-3',
                     title: 'HOODIE LOURD "SIGNATURE"',
                     description: 'Sweat à capuche en molleton ultra-épais 450 GSM. Coupe courte et boxy (boxy cropped). Capuche double épaisseur sans cordon. Broderie DVMS ton sur ton sur la manche droite.',
                     price: 50000,
@@ -88,7 +80,7 @@ class DatabaseManager {
                     created_at: new Date().toISOString()
                 },
                 {
-                    id: 'demo-p4',
+                    id: 'p-4',
                     title: 'CASQUETTE COMPRESSION "DVMS DUST"',
                     description: 'Casquette déstructurée 6 panels en sergé de coton délavé à l\'acide. Logo DVMS brodé en relief sur l\'avant. Boucle métallique de serrage style industriel.',
                     price: 18000,
@@ -100,7 +92,7 @@ class DatabaseManager {
                     created_at: new Date().toISOString()
                 },
                 {
-                    id: 'demo-p5',
+                    id: 'p-5',
                     title: 'CARGO WIDE-LEG "BRUTAL"',
                     description: 'Pantalon cargo coupe large à pinces en nylon ripstop technique durable. Poches 3D asymétriques avec sangles de serrage contrastées. Ourlet ajustable par cordon élastique.',
                     price: 55000,
@@ -112,7 +104,7 @@ class DatabaseManager {
                     created_at: new Date().toISOString()
                 },
                 {
-                    id: 'demo-p6',
+                    id: 'p-6',
                     title: 'BONNET TRICOT "NOISE"',
                     description: 'Bonnet court style docker tricoté en maille côtelée acrylique de haute qualité. Étiquette tissée DVMS noire cousue sur le revers.',
                     price: 15000,
@@ -138,7 +130,7 @@ class DatabaseManager {
 
     // --- PRODUCTS CRUD INTERFACE ---
     async getProducts() {
-        if (!this.isDemoMode) {
+        if (!this.isOfflineMode) {
             try {
                 const { data, error } = await this.supabase
                     .from('products')
@@ -163,7 +155,7 @@ class DatabaseManager {
     }
 
     async saveProduct(productId, productData) {
-        if (!this.isDemoMode) {
+        if (!this.isOfflineMode) {
             try {
                 if (productId) {
                     // Update
@@ -214,7 +206,7 @@ class DatabaseManager {
     }
 
     async deleteProduct(productId) {
-        if (!this.isDemoMode) {
+        if (!this.isOfflineMode) {
             try {
                 const { error } = await this.supabase
                     .from('products')
@@ -241,7 +233,7 @@ class DatabaseManager {
 
     // --- SETTINGS KEY-VALUE INTERFACE ---
     async getSetting(settingKey, defaultValue) {
-        if (!this.isDemoMode) {
+        if (!this.isOfflineMode) {
             try {
                 const { data, error } = await this.supabase
                     .from('settings')
@@ -271,7 +263,7 @@ class DatabaseManager {
     }
 
     async setSetting(settingKey, value) {
-        if (!this.isDemoMode) {
+        if (!this.isOfflineMode) {
             try {
                 const { error } = await this.supabase
                     .from('settings')
