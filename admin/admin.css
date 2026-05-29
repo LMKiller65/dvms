@@ -1,16 +1,27 @@
 /* ====================================================================
-   DIEU VA ME SAUVER (DVMS) - Mobile-First Isolated Admin Panel Styles
+   DIEU VA ME SAUVER (DVMS) - Isolated Admin Panel Design System
    ==================================================================== */
 
-/* ━━━ BASE DESIGN baseline (MOBILE FIRST) ━━━ */
+/* ━━━ GLOBAL STYLING OVERRIDES & RESET ━━━ */
+body {
+    background-color: var(--bg-color);
+    font-family: var(--font-body);
+}
 
-/* ━━━ LOGIN WRAPPER ━━━ */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ━━━ LOGIN SCREEN (SHARP STREETWEAR MODERNE) ━━━ */
 .admin-login-wrapper {
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    padding: 24px;
     background-color: var(--bg-color);
 }
 
@@ -19,12 +30,12 @@
     border: var(--border-light);
     box-shadow: var(--shadow-medium);
     width: 100%;
-    max-width: 480px;
-    padding: 40px 24px;
+    max-width: 440px;
+    padding: 40px 28px;
     display: flex;
     flex-direction: column;
-    gap: 30px;
-    transition: box-shadow var(--transition-speed);
+    gap: 24px;
+    transition: transform 0.3s ease;
 }
 
 .login-header {
@@ -33,123 +44,115 @@
 
 .login-brand {
     font-family: var(--font-heading);
-    font-size: 3rem;
-    margin-bottom: 8px;
-    letter-spacing: -2px;
+    font-size: 3.5rem;
     font-weight: 900;
+    line-height: 0.9;
+    letter-spacing: -3px;
+    color: var(--text-color);
+    margin-bottom: 8px;
+    text-transform: uppercase;
 }
 
 .login-subtitle {
     font-family: var(--font-technical);
-    font-size: 0.8rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
     color: var(--text-muted);
-    font-weight: bold;
-    letter-spacing: 1px;
+    text-transform: uppercase;
 }
 
 .login-error {
-    background-color: var(--text-color);
-    color: var(--accent-light);
-    border: var(--border-medium);
-    padding: 12px 14px;
+    background-color: #ffebeb;
+    color: #cc0000;
+    border: 1px solid #ffcccc;
+    padding: 12px;
     font-family: var(--font-technical);
-    font-size: 0.8rem;
-    font-weight: bold;
+    font-size: 0.78rem;
+    font-weight: 600;
     text-align: center;
+    text-transform: uppercase;
     display: none;
 }
 
-/* ━━━ ADMIN NAVBAR/HEADER ━━━ */
+/* ━━━ NAVBAR / HEADER ━━━ */
 .admin-header {
     background-color: var(--card-bg);
     border-bottom: var(--border-light);
     padding: 16px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
 .admin-header-container {
     display: flex;
     flex-direction: column;
-    align-items: stretch;
     gap: 16px;
 }
 
 .admin-brand-title {
-    font-family: var(--font-heading);
-    font-size: 2rem;
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Space out title and badge on mobile */
-    gap: 14px;
-    letter-spacing: -2px;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.brand-text-logo {
+    font-family: var(--font-heading);
+    font-size: 2.2rem;
     font-weight: 900;
+    letter-spacing: -2px;
+    color: var(--text-color);
+    line-height: 1;
 }
 
 .admin-badge {
+    font-family: var(--font-technical);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
     background-color: var(--text-color);
     color: var(--accent-light);
-    font-size: 0.65rem;
     padding: 4px 8px;
-    border: var(--border-medium);
-    font-family: var(--font-technical);
-    font-weight: bold;
-    letter-spacing: 0.5px;
+    text-transform: uppercase;
 }
 
 .admin-controls {
     display: flex;
-    gap: 12px;
+    gap: 10px;
     width: 100%;
 }
 
-.admin-controls button {
+.admin-controls .btn-brutal {
     flex: 1;
 }
 
-.admin-main {
-    padding: 30px 0 80px 0;
-}
-
-/* ━━━ STATS CARDS ━━━ */
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2x2 grid on mobile */
-    gap: 16px;
-    margin-bottom: 30px;
-}
-
-.stat-box {
-    background-color: var(--card-bg);
-    border: var(--border-light);
-    padding: 16px;
-    box-shadow: var(--shadow-soft);
+.dashboard-container {
+    margin-top: 32px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+    gap: 32px;
 }
 
-.stat-box:hover {
-    box-shadow: var(--shadow-medium);
+/* ━━━ SECTION CONFIGURATION (WHATSAPP FORM) ━━━ */
+.admin-section {
+    background-color: var(--card-bg);
+    border: var(--border-light);
+    box-shadow: var(--shadow-soft);
+    padding: 24px 20px;
 }
 
-.stat-title {
-    font-family: var(--font-technical);
-    font-size: 0.72rem;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    font-weight: bold;
-    letter-spacing: 0.5px;
-}
-
-.stat-value {
+.section-title {
     font-family: var(--font-heading);
-    font-size: 2rem;
-    line-height: 1;
-    font-weight: 800;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
     color: var(--text-color);
 }
 
-/* ━━━ DYNAMIC SETTINGS ━━━ */
 #settings-form {
     display: flex;
     flex-direction: column;
@@ -157,38 +160,111 @@
     width: 100%;
 }
 
-/* ━━━ INVENTORY LIST TABLES ━━━ */
+.settings-input-group {
+    margin: 0;
+}
+
+.submit-settings-btn {
+    height: 48px;
+    width: 100%;
+}
+
+.toast-success-label {
+    font-family: var(--font-technical);
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #1e7e34;
+    margin-top: 12px;
+    display: none;
+    letter-spacing: 0.04em;
+}
+
+/* ━━━ STATS GRID ━━━ */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.stat-box {
+    background-color: var(--card-bg);
+    border: var(--border-light);
+    padding: 20px 16px;
+    box-shadow: var(--shadow-soft);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: border-color var(--transition-speed);
+}
+
+.stat-box:hover {
+    border-color: var(--text-color);
+}
+
+.stat-title {
+    font-family: var(--font-technical);
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.stat-value {
+    font-family: var(--font-heading);
+    font-size: 2.2rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--text-color);
+}
+
+/* ━━━ INVENTORY SECTION ━━━ */
+.admin-main {
+    padding: 16px 0 80px 0;
+}
+
+.inventory-title {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+}
+
 .table-container {
     background-color: var(--card-bg);
     border: var(--border-light);
     box-shadow: var(--shadow-soft);
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .admin-table {
     width: 100%;
     border-collapse: collapse;
     text-align: left;
+    min-width: 600px;
 }
 
 .admin-table th, .admin-table td {
-    padding: 12px 14px;
+    padding: 14px 16px;
     border-bottom: var(--border-light);
-    font-size: 0.88rem;
+    vertical-align: middle;
 }
 
 .admin-table th {
     background-color: #fafafa;
     font-family: var(--font-heading);
-    text-transform: uppercase;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 700;
-    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
     color: var(--text-color);
-    user-select: none;
+    border-bottom: 2px solid var(--text-color);
 }
 
-/* Mobile-First: Hide category (3rd col) and sizes (5th col) to avoid table squishing */
+/* Hide Category (col 3) and Sizes (col 5) on Mobile for space */
 .admin-table th:nth-child(3),
 .admin-table td:nth-child(3),
 .admin-table th:nth-child(5),
@@ -196,52 +272,50 @@
     display: none;
 }
 
-.admin-table tbody tr:last-child td {
-    border-bottom: none;
-}
-
 .admin-table tbody tr {
-    transition: background-color var(--transition-speed);
+    transition: background-color 0.15s ease;
 }
 
 .admin-table tbody tr:hover {
-    background-color: #fafafa;
+    background-color: #fcfcfc;
 }
 
 .table-img {
-    width: 45px;
-    height: 58px;
+    width: 48px;
+    height: 64px;
     object-fit: cover;
-    border: var(--border-light);
-    filter: grayscale(100%);
-    transition: filter var(--transition-speed);
+    border: 1px solid #e0e0e0;
+    transition: border-color var(--transition-speed);
 }
 
-.admin-table tbody tr:hover .table-img {
-    filter: grayscale(0%);
+.admin-table tr:hover .table-img {
+    border-color: var(--text-color);
 }
 
 .table-title {
     font-family: var(--font-heading);
     font-weight: 700;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     text-transform: uppercase;
-    letter-spacing: 0.01em;
+    letter-spacing: 0.02em;
+    color: var(--text-color);
 }
 
 .table-price {
     font-family: var(--font-technical);
-    font-weight: bold;
     font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--text-color);
 }
 
 .table-badge {
     font-family: var(--font-technical);
-    font-size: 0.7rem;
-    font-weight: bold;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    padding: 3px 8px;
     text-transform: uppercase;
-    padding: 3px 6px;
-    border: var(--border-light);
+    border: 1px solid transparent;
     display: inline-block;
 }
 
@@ -252,42 +326,42 @@
 }
 
 .table-badge.badge-sold_out {
-    background-color: var(--text-color);
-    color: var(--accent-light);
-    border-color: var(--text-color);
+    background-color: #f8f9fa;
+    color: #6c757d;
+    border-color: #e2e3e5;
     text-decoration: line-through;
 }
 
 .table-badge.badge-draft {
-    background-color: var(--bg-color);
-    color: var(--text-muted);
+    background-color: #fff3cd;
+    color: #856404;
+    border-color: #ffeeba;
     border-style: dashed;
 }
 
 .table-actions {
     display: flex;
     gap: 6px;
-    justify-content: flex-start;
 }
 
-/* ━━━ POPUP FORMS MODALS ━━━ */
+/* ━━━ MODAL SYSTEM ━━━ */
 .modal {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(0.95);
-    width: 92%;
-    max-width: 680px;
-    max-height: 85vh;
+    transform: translate(-50%, -50%) scale(0.96);
+    width: 95%;
+    max-width: 600px;
+    max-height: 90vh;
     background-color: var(--card-bg);
-    border: var(--border-light);
+    border: 1px solid var(--text-color);
     box-shadow: var(--shadow-medium);
     z-index: 210;
     opacity: 0;
     pointer-events: none;
     display: flex;
     flex-direction: column;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .modal.open {
@@ -303,18 +377,24 @@
     justify-content: space-between;
     align-items: center;
     background-color: #fafafa;
+    flex-shrink: 0;
 }
 
 .modal-title {
     font-family: var(--font-heading);
-    font-size: 1.25rem;
-    font-weight: 700;
+    font-size: 1.15rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    text-transform: uppercase;
 }
 
 .modal-body {
     padding: 20px;
     overflow-y: auto;
     flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 }
 
 .modal-footer {
@@ -324,14 +404,68 @@
     display: flex;
     justify-content: flex-end;
     gap: 10px;
+    flex-shrink: 0;
 }
 
-/* Checkboxes alignments */
+.cancel-modal-btn {
+    padding: 10px 18px !important;
+    font-size: 0.8rem;
+    height: 40px;
+}
+
+.submit-modal-btn {
+    padding: 10px 18px !important;
+    font-size: 0.8rem;
+    height: 40px;
+}
+
+/* ━━━ DUAL IMAGE SUB-CARD ━━━ */
+.modal-image-group {
+    border: 1px dashed #cccccc;
+    padding: 16px;
+    background-color: #fafafa;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.image-section-title {
+    font-size: 0.75rem;
+    color: var(--text-color);
+}
+
+.image-option-group, .image-option-group-last {
+    margin: 0;
+}
+
+.image-option-label {
+    font-size: 0.72rem;
+    font-weight: normal;
+    color: var(--text-muted);
+}
+
+.image-separator {
+    text-align: center;
+    font-family: var(--font-technical);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin: 4px 0;
+    letter-spacing: 0.05em;
+}
+
+.file-input {
+    border-style: dashed;
+    padding: 8px;
+    background-color: var(--card-bg);
+}
+
+/* Checkboxes */
 .checkbox-group {
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 8px;
+    gap: 10px;
+    margin-top: 4px;
 }
 
 .checkbox-label {
@@ -339,9 +473,9 @@
     align-items: center;
     gap: 6px;
     font-family: var(--font-technical);
-    font-size: 0.85rem;
+    font-size: 0.82rem;
+    font-weight: 600;
     cursor: pointer;
-    user-select: none;
 }
 
 .checkbox-label input {
@@ -351,15 +485,24 @@
     cursor: pointer;
 }
 
-/* ━━━ RESPONSIVE BUTTONS & ICON-ONLY SYSTEM (MOBILE baseline) ━━━ */
+.description-form-group {
+    margin-bottom: 0;
+}
+
+.text-area-input {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* ━━━ BUTTON ICON SYSTEM (MOBILE FIRST) ━━━ */
 .icon-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    padding: 12px !important; /* Square default button padding on mobile */
-    min-width: 52px;
-    height: 52px;
+    padding: 12px !important;
+    min-width: 48px;
+    height: 48px;
 }
 
 .btn-icon {
@@ -367,7 +510,7 @@
 }
 
 .btn-text {
-    display: none; /* Hide labels on mobile */
+    display: none;
 }
 
 .icon-btn-table {
@@ -375,9 +518,9 @@
     align-items: center;
     justify-content: center;
     gap: 6px;
-    padding: 10px !important; /* Square default table actions padding on mobile */
-    min-width: 38px;
-    height: 38px;
+    padding: 8px !important;
+    min-width: 36px;
+    height: 36px;
     background-color: var(--card-bg);
     border: var(--border-light);
     color: var(--text-color);
@@ -392,91 +535,71 @@
 }
 
 .table-btn-text {
-    display: none; /* Hide labels on mobile */
+    display: none;
 }
 
 
-/* ━━━ DESKTOP OVERRIDES (min-width: 769px) ━━━ */
-@media (min-width: 769px) {
-    .login-card {
-        padding: 60px 40px;
-    }
-    
-    .login-brand {
-        font-size: 3.5rem;
-    }
-    
-    .login-subtitle {
-        font-size: 0.85rem;
-    }
-
-    .admin-header {
-        padding: 20px 0;
-    }
-
+/* ━━━ MEDIA QUERIES (TABLET & DESKTOP ENHANCEMENTS) ━━━ */
+@media (min-width: 768px) {
     .admin-header-container {
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
     }
 
-    .admin-brand-title {
-        font-size: 2.2rem;
-        justify-content: flex-start;
-    }
-
-    .admin-badge {
-        font-size: 0.7rem;
-    }
-
     .admin-controls {
         width: auto;
     }
 
-    .admin-controls button {
+    .admin-controls .btn-brutal {
         flex: none;
     }
 
-    .admin-main {
-        padding: 40px 0 100px 0;
+    .dashboard-container {
+        margin-top: 40px;
     }
 
+    /* Settings section to grid on desktop */
+    #settings-form {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 16px;
+        align-items: flex-end;
+        max-width: 750px;
+    }
+
+    .submit-settings-btn {
+        width: auto;
+        padding: 0 28px !important;
+    }
+
+    .toast-success-label {
+        margin-top: 8px;
+    }
+
+    /* Stats Grid to single row */
     .stats-grid {
         grid-template-columns: repeat(4, 1fr);
-        gap: 24px;
-        margin-bottom: 40px;
+        gap: 16px;
     }
 
     .stat-box {
-        padding: 24px;
+        padding: 24px 20px;
     }
 
     .stat-title {
-        font-size: 0.8rem;
+        font-size: 0.72rem;
     }
 
     .stat-value {
-        font-size: 2.6rem;
+        font-size: 2.5rem;
     }
 
-    #settings-form {
-        display: grid;
-        grid-template-columns: 2fr 1fr;
-        gap: 20px;
-        align-items: flex-end;
-        max-width: 650px;
+    .inventory-title {
+        font-size: 1.8rem;
     }
 
-    .admin-table th, .admin-table td {
-        padding: 16px 20px;
-        font-size: 0.95rem;
-    }
-
-    .admin-table th {
-        font-size: 0.85rem;
-    }
-
-    /* Restore category (3rd col) and sizes (5th col) on desktop */
+    /* Restore category & sizes on desktop table */
     .admin-table th:nth-child(3),
     .admin-table td:nth-child(3),
     .admin-table th:nth-child(5),
@@ -485,51 +608,25 @@
     }
 
     .table-img {
-        width: 50px;
-        height: 65px;
+        width: 52px;
+        height: 68px;
     }
 
     .table-title {
-        font-size: 1rem;
-    }
-
-    .table-price {
         font-size: 0.95rem;
     }
 
+    .table-price {
+        font-size: 0.92rem;
+    }
+
     .table-badge {
-        font-size: 0.75rem;
-        padding: 3px 8px;
+        font-size: 0.7rem;
     }
 
-    .table-actions {
-        gap: 8px;
-    }
-
-    .modal {
-        width: 90%;
-        max-height: 90vh;
-    }
-
-    .modal-header {
-        padding: 20px 24px;
-    }
-
-    .modal-title {
-        font-size: 1.4rem;
-    }
-
-    .modal-body {
-        padding: 24px;
-    }
-
-    .modal-footer {
-        padding: 20px 24px;
-    }
-
-    /* Show button text labels on desktop */
+    /* Show button text labels */
     .icon-btn {
-        padding: 14px 24px !important;
+        padding: 12px 20px !important;
         min-width: auto;
     }
 
@@ -538,12 +635,17 @@
     }
 
     .icon-btn-table {
-        padding: 6px 14px !important;
+        padding: 6px 12px !important;
         min-width: auto;
         height: auto;
     }
 
     .table-btn-text {
         display: inline;
+    }
+
+    .modal {
+        width: 90%;
+        max-height: 85vh;
     }
 }

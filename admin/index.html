@@ -46,7 +46,7 @@
         <header class="admin-header">
             <div class="container admin-header-container">
                 <div class="admin-brand-title">
-                    <span>DVMS</span>
+                    <span class="brand-text-logo">DVMS</span>
                     <span class="admin-badge">ADMIN GABON</span>
                 </div>
                 
@@ -70,18 +70,18 @@
             </div>
         </header>
 
-        <div class="container" style="margin-top: 40px;">
+        <div class="container dashboard-container">
 
             <!-- Dynamic Settings Section (WhatsApp Number Changer) -->
-            <section style="border: var(--border-light); background-color: var(--card-bg); box-shadow: var(--shadow-soft); padding: 28px; margin-bottom: 40px;">
-                <h3 style="font-family: var(--font-heading); font-size: 1.3rem; margin-bottom: 20px;">Configuration de la Commande WhatsApp</h3>
+            <section class="admin-section settings-section">
+                <h3 class="section-title">Configuration de la Commande WhatsApp</h3>
                 
-                <form id="settings-form" style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px; align-items: flex-end; max-width: 650px;">
-                    <div class="form-group" style="margin: 0;">
+                <form id="settings-form">
+                    <div class="form-group settings-input-group">
                         <label for="whatsapp-input" class="form-label">Numéro WhatsApp Récepteur (Format Gabon : Code pays 241, pas de + ni d'espaces)</label>
                         <input type="text" id="whatsapp-input" class="form-input" placeholder="ex: 24106200000" required>
                     </div>
-                    <button type="submit" class="btn-brutal black-btn icon-btn" style="height: 52px;" title="Mettre à jour le numéro">
+                    <button type="submit" class="btn-brutal black-btn icon-btn submit-settings-btn" title="Mettre à jour le numéro">
                         <svg class="btn-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
                             <polyline points="17 21 17 13 7 13 7 21"></polyline>
@@ -90,7 +90,7 @@
                         <span class="btn-text">Mettre à jour</span>
                     </button>
                 </form>
-                <div id="settings-success" style="font-family: var(--font-technical); font-size: 0.85rem; font-weight: bold; color: #000; margin-top: 10px; display: none;">
+                <div id="settings-success" class="toast-success-label">
                     ✓ NUMÉRO WHATSAPP ENREGISTRÉ DANS LA BASE DE DONNÉES.
                 </div>
             </section>
@@ -119,7 +119,7 @@
         <!-- Inventory List -->
         <main class="admin-main">
             <div class="container">
-                <h2 style="font-family: var(--font-heading); margin-bottom: 24px; font-size: 2rem;">Inventaire de la Collection</h2>
+                <h2 class="inventory-title">Inventaire de la Collection</h2>
                 
                 <div class="table-container">
                     <table class="admin-table">
@@ -177,19 +177,19 @@
                 </div>
 
                 <!-- Dual Image Inputs (URL or File Upload) -->
-                <div style="border: var(--border-light); padding: 18px; margin-bottom: 20px; background-color: var(--bg-color);">
-                    <div class="form-label" style="margin-bottom: 12px;">Image de l'article *</div>
+                <div class="modal-image-group">
+                    <div class="form-label image-section-title">Image de l'article *</div>
                     
-                    <div class="form-group" style="margin-bottom: 12px;">
-                        <label for="image-url-input" class="form-label" style="font-size: 0.8rem; font-weight: normal;">Option A : Lien Image externe (URL ou Base64)</label>
+                    <div class="form-group image-option-group">
+                        <label for="image-url-input" class="form-label image-option-label">Option A : Lien Image externe (URL ou Base64)</label>
                         <input type="text" id="image-url-input" class="form-input" placeholder="https://images.unsplash.com/... ou laisser vide si fichier local">
                     </div>
 
-                    <div style="text-align: center; font-family: var(--font-technical); font-size: 0.8rem; margin: 10px 0;">— OU —</div>
+                    <div class="image-separator">— OU —</div>
 
-                    <div class="form-group" style="margin-bottom: 0;">
-                        <label for="image-file-input" class="form-label" style="font-size: 0.8rem; font-weight: normal;">Option B : Téléverser un fichier local (Base64)</label>
-                        <input type="file" id="image-file-input" class="form-input" accept="image/*" style="border-style: dashed; padding: 10px;">
+                    <div class="form-group image-option-group-last">
+                        <label for="image-file-input" class="form-label image-option-label">Option B : Téléverser un fichier local (Base64)</label>
+                        <input type="file" id="image-file-input" class="form-input file-input" accept="image/*">
                     </div>
                 </div>
 
@@ -228,17 +228,17 @@
                     </select>
                 </div>
 
-                <div class="form-group" style="margin-bottom: 0;">
+                <div class="form-group description-form-group">
                     <label for="description-input" class="form-label">Détails de la pièce / Fiche technique</label>
-                    <textarea id="description-input" class="form-input" rows="4" placeholder="ex: Coton lourd 240 GSM, coupe oversized, conçu au Gabon..." style="resize: vertical;"></textarea>
+                    <textarea id="description-input" class="form-input text-area-input" rows="4" placeholder="ex: Coton lourd 240 GSM, coupe oversized, conçu au Gabon..."></textarea>
                 </div>
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn-brutal" id="modal-cancel-btn" style="padding: 10px 20px; font-size: 0.85rem;">
+                <button type="button" class="btn-brutal cancel-modal-btn" id="modal-cancel-btn">
                     Annuler
                 </button>
-                <button type="submit" class="btn-brutal black-btn" style="padding: 10px 20px; font-size: 0.85rem;">
+                <button type="submit" class="btn-brutal black-btn submit-modal-btn">
                     Enregistrer
                 </button>
             </div>
