@@ -150,6 +150,23 @@
             <div class="cart-items-list" id="cart-items">
                 <!-- Cart items injected dynamically -->
             </div>
+            
+            <!-- Customer Delivery Details Form -->
+            <div class="cart-checkout-form" id="cart-checkout-form" style="display: none; margin-top: 24px; border-top: var(--border-light); padding-top: 20px;">
+                <h4 style="font-family: var(--font-heading); font-size: 0.85rem; font-weight: 800; margin-bottom: 16px; letter-spacing: 0.05em; text-transform: uppercase;">COORDONNÉES DE LIVRAISON</h4>
+                <div class="form-group" style="margin-bottom: 12px; display: flex; flex-direction: column; gap: 6px;">
+                    <label for="cust-name" class="form-label" style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase;">Votre Nom complet *</label>
+                    <input type="text" id="cust-name" class="form-input" placeholder="ex: Marc Mba" required style="padding: 10px; font-size: 0.9rem;">
+                </div>
+                <div class="form-group" style="margin-bottom: 12px; display: flex; flex-direction: column; gap: 6px;">
+                    <label for="cust-phone" class="form-label" style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase;">Numéro de téléphone *</label>
+                    <input type="tel" id="cust-phone" class="form-input" placeholder="ex: 077 12 34 56" required style="padding: 10px; font-size: 0.9rem;">
+                </div>
+                <div class="form-group" style="margin-bottom: 0; display: flex; flex-direction: column; gap: 6px;">
+                    <label for="cust-address" class="form-label" style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase;">Adresse de livraison complète *</label>
+                    <input type="text" id="cust-address" class="form-input" placeholder="ex: Nzeng Ayong (derrière le collège), Libreville" required style="padding: 10px; font-size: 0.9rem;">
+                </div>
+            </div>
         </div>
         <div class="panel-footer">
             <div class="cart-totals">

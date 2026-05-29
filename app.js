@@ -294,6 +294,7 @@ function updateCartUI() {
     const countBubble = document.getElementById('cart-count');
     const subtotalText = document.getElementById('cart-subtotal');
     const totalText = document.getElementById('cart-total');
+    const checkoutForm = document.getElementById('cart-checkout-form');
 
     list.innerHTML = '';
     const cartItems = window.cart.items;
@@ -305,8 +306,10 @@ function updateCartUI() {
             </div>
         `;
         document.getElementById('checkout-btn').disabled = true;
+        if (checkoutForm) checkoutForm.style.display = 'none';
     } else {
         document.getElementById('checkout-btn').disabled = false;
+        if (checkoutForm) checkoutForm.style.display = 'block';
         
         cartItems.forEach(item => {
             const itemCost = item.product.price * item.qty;
@@ -343,6 +346,25 @@ function updateCartUI() {
 // Fetch WhatsApp phone from DB dynamically on checkout click
 async function handleCheckout() {
     if (window.cart.items.length === 0) return;
+
+    // Get delivery details from inputs
+    const nameInput = document.getElementById('cust-name');
+    const phoneInput = document.getElementById('cust-phone');
+    const addressInput = document.getElementById('cust-address');
+
+    const name = nameInput ? nameInput.value.trim() : '';
+    const phoneNum = phoneInput ? phoneInput.value.trim() : '';
+    const address = addressInput ? addressInput.value.trim() : '';
+
+    if (!name || !phoneNum || !address) {
+        showToast('Veuillez remplir toutes les coordonnées de livraison.');
+        
+        // Set focus to the first empty input to help user
+        if (!name && nameInput) nameInput.focus();
+        else if (!phoneNum && phoneInput) phoneInput.focus();
+        else if (!address && addressInput) addressInput.focus();
+        return;
+    }
     
     // Disable button during fetching to look professional
     const btn = document.getElementById('checkout-btn');
@@ -356,7 +378,12 @@ async function handleCheckout() {
     // Re-enable and trigger WhatsApp redirect
     btn.disabled = false;
     btn.textContent = originalText;
-    window.cart.checkout(phone);
+    
+    window.cart.checkout(phone, {
+        name,
+        phone: phoneNum,
+        address
+    });
 }
 
 // Attach listeners

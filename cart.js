@@ -90,12 +90,20 @@ class CartManager {
     }
 
     // WhatsApp Message compiler (Gabon Format)
-    checkout(whatsappNumber) {
+    checkout(whatsappNumber, clientInfo = null) {
         if (this.items.length === 0) return;
 
         let total = 0;
         let messageText = `Bonjour DVMS (Gabon), je souhaite passer une commande :\n\n`;
-        messageText += `━━━━━━━━━━━━━━━━━━━━━\n`;
+        
+        if (clientInfo) {
+            messageText += `━━━━━━━━━━━━━━━━━━━━━\n`;
+            messageText += `CLIENT : ${clientInfo.name.toUpperCase()}\n`;
+            messageText += `TÉLÉPHONE : ${clientInfo.phone}\n`;
+            messageText += `LIVRAISON : ${clientInfo.address.toUpperCase()}\n`;
+        }
+        
+        messageText += `━━━━━━━━━━━━━━━━━━━━━\n\n`;
 
         this.items.forEach(item => {
             const itemCost = item.product.price * item.qty;
