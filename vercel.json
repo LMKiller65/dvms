@@ -1,7 +1,7 @@
 {
   "cleanUrls": true,
-  "routes": [
-    { "src": "/login", "dest": "/admin/index.html" },
-    { "src": "/dashboard", "dest": "/admin/index.html" }
+  "rewrites": [
+    { "source": "/login", "destination": "/admin/index.html" },
+    { "source": "/dashboard", "destination": "/admin/index.html" }
   ]
 }
