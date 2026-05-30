@@ -5,6 +5,7 @@
 let products = [];
 let activeCategory = 'all';
 let currentSort = 'default';
+let whatsappRecipientPhone = ''; // Preloaded at startup to bypass browser popup blockers
 
 // Initialize Storefront Application
 document.addEventListener('DOMContentLoaded', async () => {
@@ -17,7 +18,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     // 3. Load Products from Database Layer
     await loadStorefrontProducts();
 
-    // 4. Setup Events
+    // 4. Preload WhatsApp settings
+    await preloadWhatsappSettings();
+
+    // 5. Setup Events
     setupStorefrontEventListeners();
 });
 
@@ -34,6 +38,16 @@ async function loadStorefrontProducts() {
                 ERREUR LORS DU CHARGEMENT DES PIÈCES. VEUILLEZ RÉESSAYER.
             </div>
         `;
+    }
+}
+
+// Preload WhatsApp Settings
+async function preloadWhatsappSettings() {
+    try {
+        whatsappRecipientPhone = await window.db.getSetting('whatsapp_number', window.CONFIG.DEFAULT_WHATSAPP_NUMBER);
+    } catch (e) {
+        console.error("Storefront: Error preloading settings:", e);
+        whatsappRecipientPhone = window.CONFIG.DEFAULT_WHATSAPP_NUMBER;
     }
 }
 
@@ -343,8 +357,8 @@ function updateCartUI() {
     totalText.textContent = window.cart.formatPrice(window.cart.getTotal());
 }
 
-// Fetch WhatsApp phone from DB dynamically on checkout click
-async function handleCheckout() {
+// Fetch WhatsApp phone from DB dynamically on checkout click (Synchronous checkout bypasses popup blockers)
+function handleCheckout() {
     if (window.cart.items.length === 0) return;
 
     // Get delivery details from inputs
@@ -366,20 +380,8 @@ async function handleCheckout() {
         return;
     }
     
-    // Disable button during fetching to look professional
-    const btn = document.getElementById('checkout-btn');
-    const originalText = btn.textContent;
-    btn.disabled = true;
-    btn.textContent = "CHARGEMENT DE LA COMMANDE...";
-
-    // Load WhatsApp number from Database (Supabase or LocalStorage Fallback)
-    const phone = await window.db.getSetting('whatsapp_number', window.CONFIG.DEFAULT_WHATSAPP_NUMBER);
-    
-    // Re-enable and trigger WhatsApp redirect
-    btn.disabled = false;
-    btn.textContent = originalText;
-    
-    window.cart.checkout(phone, {
+    // Trigger WhatsApp redirect instantly inside click event context (No blocker detection)
+    window.cart.checkout(whatsappRecipientPhone, {
         name,
         phone: phoneNum,
         address
